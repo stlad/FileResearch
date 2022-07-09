@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 
 
+
 class MainWindow(QtWidgets.QWidget):
 
     def __init__(self):
@@ -14,11 +15,12 @@ class MainWindow(QtWidgets.QWidget):
         self.path_text = QLineEdit("...")
         self.setGeometry(300, 300, 500, 500)
         self.setWindowTitle('FileResearcher')
-        self.setStyleSheet("background-color:#087712")
 
 
 
-        self.set_dir_buttons()
+        self.main_layout = self.set_dir_buttons()
+
+        self.setLayout(self.main_layout)
         self.show()
 
 
@@ -30,21 +32,32 @@ class MainWindow(QtWidgets.QWidget):
         self.dir_browse_btn.clicked.connect(self.openFileNamesDialog)
 
 
-        grid.addWidget(self.dir_browse_btn,1,2)
-        grid.addWidget(self.path_text,1,1)
-        self.setLayout(grid)
-        return
+        grid.addWidget(self.dir_browse_btn, 1, 2)
+        grid.addWidget(self.path_text, 1, 1)
+        return grid
 
 
     def openFileNamesDialog(self):
         directory = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         self.path_text.setText(directory)
         os.chdir(directory)
+
+        self.set_directory_files_list()
         print(os.listdir())
 
 
-    def get_diectory_files_list(self):
-        pass
+    def set_directory_files_list(self):
+        self.files = os.listdir()
+        grid = QGridLayout()
+
+        for i in range(len(self.files)):
+            file = self.files[i]
+            btn = QPushButton(file)
+            #btn.clicked.connect(btn.get_File_info())
+            grid.addWidget(btn, i, 0)
+
+        self.main_layout.addLayout(grid,2,2)
+        return
 
 
 

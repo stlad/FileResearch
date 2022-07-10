@@ -53,20 +53,6 @@ class FileInfo:
             pass
         pp.pprint(self.meta_info)
 
-
-
-
-    def print_os_info(self):
-        for key in self.info:
-            print(f'{key:16}: {self.info[key]}')
-
-    def print_meta_info(self):
-        if len(self.meta_info) == 0:
-            print('None')
-            pass
-        pp.pprint(self.meta_info)
-
-
     def get_all_info(self):
         res = ""
         res += '______FILE______:\n\n'
@@ -83,14 +69,8 @@ class FileInfo:
             return res
 
         res = dict_to_str(self.meta_info, res)
-        #for key in self.meta_info:
-        #    res+= f'{key:16}: {self.meta_info[key]}\n\n'
-
         return res
 
-
-def parse_directory():
-    pass
 
 
 def parse_file(filename) -> FileInfo:
@@ -143,15 +123,3 @@ def list_to_str(l, s, depth=0):
 
 
 
-s=''
-a = {
-    'a':10,
-    'b':{
-        'as':20,
-        'vv':123,
-    },
-    's':0,
-    'd':[1,2,{'ttt':2},23,4,5,[12,32]]
-}
-
-print(dict_to_str(a,s))

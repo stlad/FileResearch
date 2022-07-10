@@ -1,3 +1,4 @@
+import copy
 import os, sys
 
 import file_info_pareser
@@ -22,22 +23,29 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('FileResearcher')
 
 
-        '''Кнопки '''
+        '''Кнопки поиска директории'''
         self.path_text = QLineEdit("...")
-        self.path_text.setEnabled(False)
+        #self.path_text.setEnabled(False)
         self.path_text.textChanged.connect(self.change_current_directory)
 
         self.browse_button = QPushButton("...")
         self.browse_button.clicked.connect(self.openFileNamesDialog)
 
+        browser_text_btn = QHBoxLayout()
+        browser_text_btn.addWidget(self.path_text)
+        browser_text_btn.addWidget(self.browse_button)
+
         '''Текстовое поле'''
+        self.info_text_area = QTextBrowser()
 
 
         '''Основные слои'''
         self.main_layout = QGridLayout()
-        self.main_layout.addWidget(self.path_text, 1, 0)
-        self.main_layout.addWidget(self.browse_button, 1, 1)
+        self.main_layout.addLayout(browser_text_btn, 1, 0)
+        self.main_layout.addWidget(self.info_text_area,2,1)
 
+
+        '''Слайдер списка фалов'''
         self.files_scroll_area  = QScrollArea()
         self.files_scroll_area.setWidget(QWidget())
 
@@ -50,7 +58,13 @@ class MainWindow(QMainWindow):
 
     def change_current_directory(self):
         '''Метод меняет рабочую директорию'''
-        os.chdir(self.path_text.text())
+
+        try:
+            os.chdir(self.path_text.text())
+        except OSError:
+            self.path_text.setText('Такой папки нет')
+            return
+
         self.create_files_list_widget()
         print(os.listdir())
 
@@ -61,7 +75,6 @@ class MainWindow(QMainWindow):
 
     def create_files_list_widget(self):
         '''Метод сканируюет рабочую директорию и создает кнопки для всех файлов в ней'''
-        print(self.files_scroll_area.widget().layout())
         self.clear_layout(self.files_scroll_area.widget().layout())
         if self.path_text.text() == '...':
             return
@@ -71,9 +84,10 @@ class MainWindow(QMainWindow):
         for i in range(len(files)):
             file = files[i]
             btn = QPushButton(file)
-            btn.setObjectName(f"button {i}")
-            #get_file_indo_lambda = lambda : file_info_pareser.parse_file(file)
-
+            btn.setObjectName(f'button {i}')
+            btn.clicked.connect(
+                lambda checked, filename = file: self.parse_file_info(filename)
+            )
             files_layout.addWidget(btn, i)
 
         scroll_widget = QWidget()
@@ -85,31 +99,18 @@ class MainWindow(QMainWindow):
         """Очищает переданный слой от всех виджетов"""
         if layout==None:
             return
-
         widgets = layout.layout().count()
-
-        print(widgets)
         for i in range(widgets):
-            print(layout.layout().itemAt(0).widget().objectName())
             widget = layout.layout().itemAt(0).widget()
             layout.layout().removeWidget(widget)
             widget.hide()
 
 
 
-
-
-
-    def set_directory_files_list(self):
-        self.files = os.listdir()
-        self.clear_layout(self.directory_files_layout)
-
-
-
-        return
-
-
-
+    def parse_file_info(self, filename):
+        print(filename)
+        file_info = file_info_pareser.parse_file(filename)
+        self.info_text_area.setText(file_info.get_all_info())
 
 
 if __name__ == '__main__':

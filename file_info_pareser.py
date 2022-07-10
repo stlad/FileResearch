@@ -16,6 +16,7 @@ FileTypes ={
 
 
 class FileInfo:
+    '''Класс, содержащий подробную информацию о файле'''
     def __init__(self, name, full_path, file_type, info, meta):
         self.filename = name
         self.full_path = full_path
@@ -58,6 +59,7 @@ def parse_directory():
 
 
 def parse_file(filename) -> FileInfo:
+    '''Вытаскивает подруюную инфомарцию о файле и возвращает FileInfo'''
     file_extention = filename[filename.find('.'):]
     file_type = 'Directory'
     for key in FileTypes:

@@ -4,6 +4,7 @@ import os_info as osI
 import meta_info as metaI
 import os
 import pprint as pp
+import  stat as st
 
 FileTypes ={
     'Image':['.jpg','.png','.gif'],
@@ -120,6 +121,11 @@ def list_to_str(l, s, depth=0):
         else:
             s += ' '*depth*10 +f'{elem}\n\n'
     return s
+
+def is_directory(filename):
+    f_stat = os.stat(filename)
+    return st.S_ISDIR(f_stat.st_mode)
+
 
 
 

@@ -1,5 +1,4 @@
 
-
 main_window_style = '\n'.join(['background-color:#010812'])
 colors = '010812 0b212f 44586a a2b4c3 cdd4db'
 

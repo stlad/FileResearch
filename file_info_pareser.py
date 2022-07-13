@@ -61,8 +61,9 @@ class FileInfo:
         res += f'full path       : {self.full_path}\n\n'
         res += f'file type       : {self.file_type}\n\n'
         res += '_____OS_Info____:\n\n'
-        for key in self.info:
-            res+=f'{key:16}: {self.info[key]}\n\n'
+        #for key in self.info:
+        #    res+=f'{key:16}: {self.info[key]}\n\n'
+        res = dict_to_str(self.info, res)
         res += '_____META_INFO__:\n\n'
 
         if len(self.meta_info) == 0:

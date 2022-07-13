@@ -41,7 +41,11 @@ class MainWindow(QMainWindow):
 
     def create_btn_list(self, browser):
         path = self.left_browser.path
-        print(path)
+        if not os.path.exists(path):
+            browser.path_text_field.setText('Такого пути нет')
+            return
+        #print(path)
+
         l = FileList(browser).layout
 
         scroll = QScrollArea()

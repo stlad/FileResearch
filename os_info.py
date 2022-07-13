@@ -14,7 +14,37 @@ def get_info(filename):
     res['Last modified'] = time.ctime(f_stat.st_mtime)
     res['Last accessed'] = time.ctime(f_stat.st_atime)
     res['Stat'] = f_stat
-    res['Filemode str'] = st.filemode(f_stat.st_mode)
     res['Is Directory'] = st.S_ISDIR(f_stat.st_mode)
+    res['Filemode str'] = st.filemode(f_stat.st_mode)
+    res['Права доступа'] = file_mod_str_to_dict(res['Filemode str'])
 
     return res
+
+def file_mod_str_to_dict(mode):
+    #res['Тип по rwx'] = 'Файл' if mode[0]=='-' else 'Директория'
+
+    owner = mode[1:4]
+    main_group = mode[4:7]
+    rest = mode[7:]
+
+    dct = {
+        'Владлец':parse_filemode_triple(owner),
+        'Основная группа':parse_filemode_triple(main_group),
+        'Остальные пользователи':parse_filemode_triple(rest)
+    }
+    return dct
+
+
+def parse_filemode_triple(triple):
+    s = []
+    if triple[0]=='r':
+        s.append('Чтение')
+
+    if triple[1]=='w':
+        s.append('Запись')
+
+    if triple[2]=='x':
+        s.append('Исполнение')
+    return s
+
+

@@ -14,7 +14,7 @@ class FileElement(QWidget):
         self.name = fullpath[fullpath.rfind('/')+1:]
         self.parent_browser = parent_path_browser
         self.is_dir = os.path.isdir(self.fullpath)
-        self.is_docx = self.name[self.name.find('.'):] == '.doc'
+        self.is_docx = self.name[self.name.find('.'):] == '.docx'
 
         self.layout = QHBoxLayout()
 
@@ -26,12 +26,12 @@ class FileElement(QWidget):
         self.child_window = [] # дочернее окно тут хренится, чтобы предотвратить закрытие дочернего окна
         self.info_button = QPushButton()
         self.info_button.setText('?')
-        self.info_button.setFixedWidth(30)
+        self.info_button.setFixedWidth(50)
         self.info_button.clicked.connect(lambda: self.create_file_info_window())
 
 
         self.down_dir_button = QPushButton()
-        self.down_dir_button.setFixedWidth(30)
+        self.down_dir_button.setFixedWidth(50)
 
         if self.is_dir:
             self.down_dir_button.setText('↓')
@@ -39,12 +39,13 @@ class FileElement(QWidget):
 
         self.doc_info_button = QPushButton()
         if self.is_docx:
-            self.doc_info_button.setText('.doc')
-            self.doc_info_button.setFixedWidth(30)
+            self.doc_info_button.setText('.docx')
+            self.doc_info_button.setFixedWidth(50)
 
 
         self.replace_button = QPushButton()
-        self.replace_button.setFixedWidth(30)
+        self.replace_button.setFixedWidth(50)
+        self.replace_button.clicked.connect(lambda: self.accept_replace_dialog())
         self.create_buttons()
 
 
@@ -52,6 +53,35 @@ class FileElement(QWidget):
         f = FileInfoWindow(self.fullpath)
         self.child_window.append(f)
         f.show()
+
+    def create_docx_info_window(self):
+        pass
+
+    def replace_file(self, target_path):
+        try:
+            os.rename(self.fullpath, target_path+'/'+self.name)
+            self.parent_browser.main_parent.refresh_browsers()
+            #print(self.fullpath, target_path)
+
+        except OSError:
+            return
+
+    def accept_replace_dialog(self):
+        side = self.parent_browser.side
+        if side == en.Side.LEFT:
+            target_browser = self.parent_browser.main_parent.right_browser
+        else:
+            target_browser = self.parent_browser.main_parent.left_browser
+
+        target_path = target_browser.path
+        current_path = self.parent_browser.path
+
+        ret = QMessageBox.question(self, 'Перемещение файла', f"перенести файл {self.name}\nиз {current_path}\nв {target_path}",
+                                   QMessageBox.Yes | QMessageBox.No )
+
+        if ret == QMessageBox.Yes:
+            self.replace_file(target_path)
+        pass
 
     def go_dir_down(self):
         next = self.fullpath

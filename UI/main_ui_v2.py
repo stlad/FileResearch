@@ -36,7 +36,6 @@ class MainWindow(QMainWindow):
         )
 
 
-
         self.centralWidget.setLayout(self.main_layout)
         self.show()
 
@@ -54,6 +53,9 @@ class MainWindow(QMainWindow):
         else:
             self.main_layout.addWidget(scroll,1,1)
 
+    def refresh_browsers(self):
+        self.create_btn_list(self.left_browser)
+        self.create_btn_list(self.right_browser)
 
 
 

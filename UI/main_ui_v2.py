@@ -1,12 +1,12 @@
 import os
-import file_info_pareser as parser
+import file_info_parser as parser
 from PyQt5.QtWidgets import *
 from UI import main_window_styles as styles
 from UI.UiEnums import *
 from UI.PathBrowser import *
 from UI.FileElement import *
 from UI.FilesLIst import *
-
+from PyQt5 import QtCore
 
 class MainWindow(QMainWindow):
     def __init__(self):

@@ -1,5 +1,5 @@
-import file_info_pareser
-import file_info_pareser as parser
+import file_info_parser
+import file_info_parser as parser
 from PyQt5.QtWidgets import *
 from UI import main_window_styles as styles
 
@@ -130,7 +130,7 @@ class MainWindow(QMainWindow):
 
     def parse_file_info(self, filename):
         #print(filename)
-        file_info = file_info_pareser.parse_file(filename)
+        file_info = file_info_parser.parse_file(filename)
         self.info_text_area.setText(file_info.get_all_info())
 
     def set_back_directory(self):

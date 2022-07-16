@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 import os, sys
-import file_info_pareser as parser
+import file_info_parser as parser
 
 class FileInfoWindow(QWidget):
     def __init__(self, fullpath):

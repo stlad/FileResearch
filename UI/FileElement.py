@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import *
 import os
 import UI.UiEnums as en
 from UI.File_info_ui import *
+import UI.main_window_styles as styles
+from UI.Docx_info_ui import *
 
 
 class FileElement(QWidget):
@@ -41,6 +43,7 @@ class FileElement(QWidget):
         if self.is_docx:
             self.doc_info_button.setText('.docx')
             self.doc_info_button.setFixedWidth(50)
+            self.doc_info_button.clicked.connect(lambda: self.create_docx_info_window())
 
 
         self.replace_button = QPushButton()
@@ -55,6 +58,9 @@ class FileElement(QWidget):
         f.show()
 
     def create_docx_info_window(self):
+        f = DocxInfoWindow(self.fullpath)
+        self.child_window.append(f)
+        f.show()
         pass
 
     def replace_file(self, target_path):

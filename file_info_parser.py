@@ -103,7 +103,7 @@ def dict_to_str(dct, s, depth =0):
         if isinstance(dct[key], dict):
             s+='\n'
             s = dict_to_str(dct[key],s, depth+1)
-        elif isinstance(dct[key],list):
+        elif isinstance(dct[key],list) or isinstance(dct[key],tuple):
             s+='\n'
             s = list_to_str(dct[key],s, depth+1)
 
@@ -116,7 +116,7 @@ def list_to_str(l, s, depth=0):
         if isinstance(elem, dict):
             s+='\n'
             s = dict_to_str(elem,s,depth+1)
-        elif isinstance(elem,list):
+        elif isinstance(elem,list) or isinstance(elem, tuple):
             s+='\n'
             s = list_to_str(elem,s,depth+1 )
         else:

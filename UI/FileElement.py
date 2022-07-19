@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 import os
 import UI.UiEnums as en
 from UI.File_info_ui import *
-import UI.main_window_styles as styles
+import UI.styles_old as styles
 from UI.Docx_info_ui import *
 
 
@@ -64,6 +64,10 @@ class FileElement(QWidget):
         pass
 
     def replace_file(self, target_path):
+        if target_path.__contains__(self.fullpath):
+
+            return
+
         try:
             os.rename(self.fullpath, target_path+'/'+self.name)
             self.parent_browser.main_parent.refresh_browsers()

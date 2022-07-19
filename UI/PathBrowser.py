@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 import os
 import UI.UiEnums as en
 from UI.FileElement import *
+from UI import styles as st
 
 class PathBrowser(QWidget):
     '''
@@ -17,6 +18,7 @@ class PathBrowser(QWidget):
         self.path_text_field = QLineEdit()
         self.path_text_field.setText(self.path)
         self.path_text_field.textChanged.connect( self.change_directory)
+        #self.path_text_field.setStyleSheet(st.text_areas_s)
 
         self.back_button = QPushButton()
         self.back_button.setText('←')
@@ -35,6 +37,8 @@ class PathBrowser(QWidget):
 
     def openFileNamesDialog(self):
         directory = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
+        if directory=='':
+            return
         self.path_text_field.setText(directory)
 
 

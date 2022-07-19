@@ -40,12 +40,13 @@ class Paragraph:
         self.paragraph = par
         self.text = par.text
         self.symbol_count = len(self.text)
+        self.words_count = len(self.text.split(' '))
 
     def get_par_info(self):
         res ={}
         res['Текст']= self.text,
         res['Количество символов']= self.symbol_count
-
+        res['Количество слов']=self.words_count
         return res
 
 

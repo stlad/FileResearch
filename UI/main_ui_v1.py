@@ -1,7 +1,7 @@
 import file_info_parser
 import file_info_parser as parser
 from PyQt5.QtWidgets import *
-from UI import main_window_styles as styles
+from UI import styles_old as styles
 
 import os
 

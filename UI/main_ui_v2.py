@@ -1,12 +1,13 @@
 import os
 import file_info_parser as parser
 from PyQt5.QtWidgets import *
-from UI import main_window_styles as styles
+from UI import styles as st
 from UI.UiEnums import *
 from UI.PathBrowser import *
 from UI.FileElement import *
 from UI.FilesLIst import *
 from PyQt5 import QtCore
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -36,7 +37,13 @@ class MainWindow(QMainWindow):
         )
 
 
+        self.footer_layot = QHBoxLayout()
+        label = QLabel('Ваганов Владислав, \nЛетняя практика 2022')
+        self.footer_layot.addWidget(label)
+
+        self.main_layout.addLayout(self.footer_layot,2,0)
         self.centralWidget.setLayout(self.main_layout)
+        #self.centralWidget.setStyleSheet(st.main_background)
         self.show()
 
     def create_btn_list(self, browser):
@@ -52,6 +59,7 @@ class MainWindow(QMainWindow):
         w = QWidget()
         w.setLayout(l)
         scroll.setWidget(w)
+        #scroll.setStyleSheet(st.text_areas_s)
         if browser.side == Side.LEFT:
             self.main_layout.addWidget(scroll,1,0)
         else:

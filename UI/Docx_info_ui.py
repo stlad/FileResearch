@@ -42,8 +42,20 @@ class DocxInfoWindow(QWidget):
         self.accept_btn.setText('Выбрать')
         self.accept_btn.clicked.connect(lambda: self.get_info_from_p_num())
 
+        self.last_par_btn = QPushButton()
+        self.last_par_btn.setText('←')
+        self.last_par_btn.setFixedWidth(20)
+        self.last_par_btn.clicked.connect(lambda checked, dir = -1: self.get_next_or_back_par(dir))
+
+        self.next_par_btn = QPushButton()
+        self.next_par_btn.setText('→')
+        self.next_par_btn.setFixedWidth(20)
+        self.next_par_btn.clicked.connect(lambda checked, dir = 1: self.get_next_or_back_par(dir))
+
         lt.addWidget(label)
+        lt.addWidget(self.last_par_btn)
         lt.addWidget(self.p_num_text)
+        lt.addWidget(self.next_par_btn)
         lt.addWidget(self.accept_btn)
         return lt
 
@@ -65,3 +77,16 @@ class DocxInfoWindow(QWidget):
         info = parser.dict_to_str(par.get_par_info(), info)
 
         self.text_area.setText(info)
+
+    def get_next_or_back_par(self, delta):
+        '''
+        Следующий абзац
+        :param delta: 1 => +; -1 => -
+        :return:
+        '''
+        current_par = int(self.p_num_text.text())
+        if (current_par <=1 and delta==-1) or (current_par >= int(self.doc_info.paragraph_count) and delta==1):
+            return
+
+        self.p_num_text.setText(str(current_par+delta))
+        self.get_info_from_p_num()

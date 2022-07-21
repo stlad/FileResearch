@@ -23,6 +23,7 @@ class FileElement(QWidget):
         self.file_button = QPushButton()
         self.file_button.setText(self.name)
         self.file_button.setFixedWidth(150)
+        self.file_button.clicked.connect(lambda: self.rename_file_dialog())
 
 
         self.child_window = [] # дочернее окно тут хренится, чтобы предотвратить закрытие дочернего окна
@@ -49,7 +50,25 @@ class FileElement(QWidget):
         self.replace_button = QPushButton()
         self.replace_button.setFixedWidth(50)
         self.replace_button.clicked.connect(lambda: self.accept_replace_dialog())
+
         self.create_buttons()
+
+    def rename_file_dialog(self):
+        dialog = QInputDialog(self)
+        dialog.setTextValue('s')
+        new_name, ok = dialog.getText(self, 'Перименование файла', 'Новое имя:',QLineEdit.Normal, self.name)
+
+        if not ok:
+            return
+
+        new_fullpath = self.fullpath[:self.fullpath.rfind('/')+1]+new_name
+        os.rename(self.fullpath,new_fullpath)
+        self.fullpath = new_fullpath
+        self.name = new_name
+        self.file_button.setText(new_name)
+
+        #if ret == QMessageBox.Yes:
+        #    self.replace_file(target_path)
 
 
     def create_file_info_window(self):
@@ -65,9 +84,7 @@ class FileElement(QWidget):
 
     def replace_file(self, target_path):
         if target_path.__contains__(self.fullpath):
-
             return
-
         try:
             os.rename(self.fullpath, target_path+'/'+self.name)
             self.parent_browser.main_parent.refresh_browsers()

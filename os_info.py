@@ -16,7 +16,7 @@ def get_info(filename):
     res['Stat'] = f_stat
     res['Is Directory'] = st.S_ISDIR(f_stat.st_mode)
     res['Filemode str'] = st.filemode(f_stat.st_mode)
-    res['Права доступа'] = file_mod_str_to_dict(res['Filemode str'])
+    res['Access rights'] = file_mod_str_to_dict(res['Filemode str'])
 
     return res
 
@@ -28,9 +28,9 @@ def file_mod_str_to_dict(mode):
     rest = mode[7:]
 
     dct = {
-        'Владлец':parse_filemode_triple(owner),
-        'Основная группа':parse_filemode_triple(main_group),
-        'Остальные пользователи':parse_filemode_triple(rest)
+        'Owner':parse_filemode_triple(owner),
+        'Main Group':parse_filemode_triple(main_group),
+        'Rest Users':parse_filemode_triple(rest)
     }
     return dct
 
@@ -38,13 +38,13 @@ def file_mod_str_to_dict(mode):
 def parse_filemode_triple(triple):
     s = []
     if triple[0]=='r':
-        s.append('Чтение')
+        s.append('Read')
 
     if triple[1]=='w':
-        s.append('Запись')
+        s.append('Write')
 
     if triple[2]=='x':
-        s.append('Исполнение')
+        s.append('Execute')
     return s
 
 

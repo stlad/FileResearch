@@ -64,7 +64,7 @@ class PathBrowser(QWidget):
             return
         self.path_text_field.setText(path[0:index])
 
-    def create_file(self):
+    def create_file_old(self):
         if self.path =='...':
             return
         dialog = QInputDialog(self)
@@ -79,6 +79,13 @@ class PathBrowser(QWidget):
 
         new_file = open(self.path+'/'+new_name, "w+")
         new_file.close()
+
+    def create_file(self):
+        if self.path =='...':
+            return
+        name = QFileDialog.getSaveFileName(self, 'Save File')
+        file = open(name[0], 'w+')
+        file.close()
 
 
 

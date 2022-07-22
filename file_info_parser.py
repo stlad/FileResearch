@@ -1,10 +1,10 @@
 import sys
-
 import os_info as osI
 import meta_info as metaI
 import os
 import pprint as pp
 import  stat as st
+import json
 
 FileTypes ={
     'Image':['.jpg','.png','.gif'],
@@ -33,6 +33,12 @@ class FileInfo:
         for key in self.meta_info:
             self.meta_info_size += sys.getsizeof(self.meta_info[key])
 
+    def get_json(self):
+        res = {}
+        res['OS Info'] = self.info
+        res['Meta Info'] = self.meta_info
+        return json.dumps(res)
+
 
     def print_all_info(self):
         print('______FILE______:')
@@ -40,15 +46,15 @@ class FileInfo:
         print(f'full path       : {self.full_path}')
         print(f'file type       : {self.file_type}')
         print('_____OS_Info____:')
-        self.print_os_info()
+        self._print_os_info()
         print('_____META_INFO__:')
-        self.print_meta_info()
+        self._print_meta_info()
 
-    def print_os_info(self):
+    def _print_os_info(self):
         for key in self.info:
             print(f'{key:16}: {self.info[key]}')
 
-    def print_meta_info(self):
+    def _print_meta_info(self):
         if len(self.meta_info) == 0:
             print('None')
             pass

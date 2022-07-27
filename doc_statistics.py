@@ -41,12 +41,15 @@ class Paragraph:
         self.text = par.text
         self.symbol_count = len(self.text)
         self.words_count = len(self.text.split(' '))
+        self.style =self.paragraph.style
 
     def get_par_info(self):
         res ={}
-        res['Текст']= self.text,
-        res['Количество символов']= self.symbol_count
-        res['Количество слов']=self.words_count
+        res['Text']= self.text,
+        res['Symbol count']= self.symbol_count
+        res['Words Count']=self.words_count
+        res['Paragraph style']=self.style
+        res['Alignment '] = self.paragraph.alignment
         return res
 
 

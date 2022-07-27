@@ -46,10 +46,10 @@ class Paragraph:
     def get_par_info(self):
         res ={}
         res['Text']= self.text,
-        res['Symbol count']= self.symbol_count
-        res['Words Count']=self.words_count
-        res['Paragraph style']=self.style
-        res['Alignment '] = self.paragraph.alignment
+        res['Symbol count']= str(self.symbol_count)
+        res['Words Count']=str(self.words_count)
+        res['Paragraph style']=str(self.style)
+        res['Alignment '] = str(self.paragraph.alignment)
         return res
 
 

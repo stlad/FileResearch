@@ -19,6 +19,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.centralWidget)
         self.setGeometry(300, 300, 1200, 700)
         self.setWindowTitle('FileResearcher v2')
+        self.setStyleSheet(st.main_background)
         self.main_layout = QGridLayout()
 
         self.left_files=  []
@@ -36,14 +37,12 @@ class MainWindow(QMainWindow):
             lambda checked, browser = self.right_browser: self.create_btn_list(browser)
         )
 
-
         self.footer_layot = QHBoxLayout()
         label = QLabel('Ваганов Владислав, \nЛетняя практика 2022')
         self.footer_layot.addWidget(label)
 
         self.main_layout.addLayout(self.footer_layot,2,0)
         self.centralWidget.setLayout(self.main_layout)
-        #self.centralWidget.setStyleSheet(st.main_background)
         self.show()
 
     def create_btn_list(self, browser):
@@ -51,15 +50,14 @@ class MainWindow(QMainWindow):
         if not os.path.exists(path):
             browser.path_text_field.setText('Такого пути нет')
             return
-        #print(path)
-
         l = FileList(browser).layout
 
         scroll = QScrollArea()
         w = QWidget()
         w.setLayout(l)
         scroll.setWidget(w)
-        #scroll.setStyleSheet(st.text_areas_s)
+        scroll.setStyleSheet(st.text_scrolls_style)
+
         if browser.side == Side.LEFT:
             self.main_layout.addWidget(scroll,1,0)
         else:
@@ -68,7 +66,3 @@ class MainWindow(QMainWindow):
     def refresh_browsers(self):
         self.create_btn_list(self.left_browser)
         self.create_btn_list(self.right_browser)
-
-
-
-

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 import os
 import UI.UiEnums as en
 from UI.File_info_ui import *
-import UI.styles_old as styles
+import UI.styles as st
 from UI.Docx_info_ui import *
 
 
@@ -17,20 +17,21 @@ class FileElement(QWidget):
         self.parent_browser = parent_path_browser
         self.is_dir = os.path.isdir(self.fullpath)
         self.is_docx = self.name[self.name.find('.'):] == '.docx'
-
+        buttnos= []
         self.layout = QHBoxLayout()
 
         self.file_button = QPushButton()
         self.file_button.setText(self.name)
         self.file_button.setFixedWidth(150)
         self.file_button.clicked.connect(lambda: self.rename_file_dialog())
-
+        buttnos.append(self.file_button)
 
         self.child_window = [] # дочернее окно тут хренится, чтобы предотвратить закрытие дочернего окна
         self.info_button = QPushButton()
         self.info_button.setText('?')
         self.info_button.setFixedWidth(50)
         self.info_button.clicked.connect(lambda: self.create_file_info_window())
+        buttnos.append(self.info_button)
 
 
         self.down_dir_button = QPushButton()
@@ -40,16 +41,24 @@ class FileElement(QWidget):
             self.down_dir_button.setText('↓')
             self.down_dir_button.clicked.connect(lambda: self.go_dir_down())
 
+        buttnos.append(self.down_dir_button)
+
         self.doc_info_button = QPushButton()
+        self.doc_info_button.setFixedWidth(50)
         if self.is_docx:
             self.doc_info_button.setText('.docx')
-            self.doc_info_button.setFixedWidth(50)
             self.doc_info_button.clicked.connect(lambda: self.create_docx_info_window())
 
+        buttnos.append(self.doc_info_button)
 
         self.replace_button = QPushButton()
         self.replace_button.setFixedWidth(50)
         self.replace_button.clicked.connect(lambda: self.accept_replace_dialog())
+
+        buttnos.append(self.replace_button)
+
+        for btn in buttnos:
+            btn.setStyleSheet(st.button_style)
 
         self.create_buttons()
 
@@ -66,9 +75,6 @@ class FileElement(QWidget):
         self.fullpath = new_fullpath
         self.name = new_name
         self.file_button.setText(new_name)
-
-        #if ret == QMessageBox.Yes:
-        #    self.replace_file(target_path)
 
 
     def create_file_info_window(self):

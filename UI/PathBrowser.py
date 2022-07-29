@@ -14,25 +14,27 @@ class PathBrowser(QWidget):
         self.side = side
         self.main_parent = main_parent
 
-
         self.path_text_field = QLineEdit()
         self.path_text_field.setText(self.path)
         self.path_text_field.textChanged.connect( self.change_directory)
-        #self.path_text_field.setStyleSheet(st.text_areas_s)
+        self.path_text_field.setStyleSheet(st.text_scrolls_style + 'padding:3px 3px 3px 3px')
 
         self.back_button = QPushButton()
         self.back_button.setText('←')
         self.back_button.setFixedWidth(50)
         self.back_button.clicked.connect(self.set_back_directory)
+        self.back_button.setStyleSheet(st.button_style)
 
         self.browse_button = QPushButton()
         self.browse_button.setText('...')
         self.browse_button.clicked.connect(self.openFileNamesDialog)
+        self.browse_button.setStyleSheet(st.button_style)
 
         self.add_file_btn = QPushButton()
         self.add_file_btn.setFixedWidth(50)
         self.add_file_btn.setText('+')
         self.add_file_btn.clicked.connect(lambda: self.create_file())
+        self.add_file_btn.setStyleSheet(st.button_style)
 
 
         self.dir_menu_layout = QHBoxLayout()
@@ -64,26 +66,14 @@ class PathBrowser(QWidget):
             return
         self.path_text_field.setText(path[0:index])
 
-    def create_file_old(self):
-        if self.path =='...':
-            return
-        dialog = QInputDialog(self)
-        new_name, ok = dialog.getText(self, 'Создание файла', 'Новое имя:',QLineEdit.Normal)
-
-        if not ok:
-            return
-
-        if os.listdir(self.path).__contains__(new_name):
-            print('такой файл есть')
-            return
-
-        new_file = open(self.path+'/'+new_name, "w+")
-        new_file.close()
-
     def create_file(self):
         if self.path =='...':
             return
-        name = QFileDialog.getSaveFileName(self, 'Save File')
+
+        name, type = QFileDialog.getSaveFileName(self, 'Создать файл','', '(*.txt)')
+        if name == '':
+            return
+
         file = open(name[0], 'w+')
         file.close()
 

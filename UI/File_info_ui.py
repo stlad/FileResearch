@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
-import os, sys
+import os
 import file_info_parser as parser
+import UI.styles as st
 
 class FileInfoWindow(QWidget):
     def __init__(self, fullpath):
@@ -12,8 +13,10 @@ class FileInfoWindow(QWidget):
         self.text_area = QTextBrowser()
         os.chdir(self.fullpath[:fullpath.rfind('/')])
         self.file_info = parser.parse_file(self.name)
+        self.setStyleSheet(st.main_background)
 
         self.text_area.setText(self.file_info.get_all_info())
+        self.text_area.setStyleSheet(st.text_scrolls_style)
         text_layout = QVBoxLayout()
         text_layout.addWidget(self.text_area)
         scroll = QScrollArea()
@@ -25,6 +28,7 @@ class FileInfoWindow(QWidget):
         self.save_btn.setText('Save as .json')
         self.save_btn.clicked.connect(lambda: self.save_json())
         self.save_btn.setFixedWidth(100)
+        self.save_btn.setStyleSheet(st.button_style)
         menu_layput.addWidget(self.save_btn)
         menu_layput.addStretch(1)
 

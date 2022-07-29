@@ -1,9 +1,8 @@
 from PyQt5.QtWidgets import *
-import os, sys
+import os,json
 import file_info_parser as parser
 import doc_statistics as ds
-from PyQt5 import QtCore
-import json
+import UI.styles as st
 
 class DocxInfoWindow(QWidget):
     def __init__(self, fullpath):
@@ -15,7 +14,7 @@ class DocxInfoWindow(QWidget):
         self.text_area = QTextBrowser()
         os.chdir(self.fullpath[:fullpath.rfind('/')])
         self.doc_info = ds.docx_staticstics(self.name)
-
+        self.setStyleSheet(st.main_background)
 
         self.text_area.setText('')
         text_layout = QVBoxLayout()
@@ -37,20 +36,24 @@ class DocxInfoWindow(QWidget):
 
         self.p_num_text = QLineEdit()
         self.p_num_text.setFixedWidth(80)
+        self.p_num_text.setStyleSheet(st.text_scrolls_style)
 
         self.accept_btn = QPushButton()
         self.accept_btn.setText('Выбрать')
         self.accept_btn.clicked.connect(lambda: self._get_info_from_p_num())
+        self.accept_btn.setStyleSheet(st.button_style)
 
         self.last_par_btn = QPushButton()
         self.last_par_btn.setText('←')
         self.last_par_btn.setFixedWidth(30)
         self.last_par_btn.clicked.connect(lambda checked, dir = -1: self._get_next_or_back_par(dir))
+        self.last_par_btn.setStyleSheet(st.button_style)
 
         self.next_par_btn = QPushButton()
         self.next_par_btn.setText('→')
         self.next_par_btn.setFixedWidth(30)
         self.next_par_btn.clicked.connect(lambda checked, dir = 1: self._get_next_or_back_par(dir))
+        self.next_par_btn.setStyleSheet(st.button_style)
 
         lt.addWidget(label)
         lt.addWidget(self.last_par_btn)
@@ -103,6 +106,7 @@ class DocxInfoWindow(QWidget):
         self.save_btn.setText('Save as .json')
         self.save_btn.clicked.connect(lambda: self._save_json())
         self.save_btn.setFixedWidth(100)
+        self.save_btn.setStyleSheet(st.button_style)
 
         footer_layout.addWidget(self.save_btn)
         return footer_layout

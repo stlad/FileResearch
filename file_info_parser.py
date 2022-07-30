@@ -1,10 +1,8 @@
-import sys
 import os_info as osI
 import meta_info as metaI
-import os
+import os,sys,json
 import pprint as pp
 import  stat as st
-import json
 
 FileTypes ={
     'Image':['.jpg','.png','.gif'],

@@ -1,5 +1,6 @@
-import docx
-import os
+import docx, os
+import zipfile as zip
+
 
 def ger_docx_meta(docname): # вооще из дока можнов вытащить все что у годно. тут только минимум
     doc = docx.Document(docname)
@@ -20,8 +21,9 @@ class docx_staticstics:
     def __init__(self, name):
         self.name = name
         self.doc = docx.Document(self.name)
-
         self.paragraph_count = len(self.doc.paragraphs)
+        self.fullpath = os.path.abspath(name)
+
 
 
     def get_info(self):
@@ -34,6 +36,24 @@ class docx_staticstics:
         p_list = list(self.doc.paragraphs)
         p = Paragraph(p_list[index-1])
         return p
+
+    def get_doxc_zip_info(self):
+        z = zip.ZipFile(self.fullpath, 'r')
+        a = z.infolist()
+        res = []
+        for info in a:
+            inf = {}
+            inf['FileName'] = info.filename
+            inf['CRC'] = info.CRC
+            inf['Create system'] = info.create_system
+            inf['Create version'] = info.create_version
+            inf['Compress type'] = info.compress_type
+            inf['File Size'] = info.file_size
+            inf['Volume'] = info.volume
+            res.append(inf)
+        z.close()
+        return res
+
 
 class Paragraph:
     def __init__(self, par):

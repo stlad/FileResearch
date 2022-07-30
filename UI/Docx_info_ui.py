@@ -17,14 +17,23 @@ class DocxInfoWindow(QWidget):
         self.setStyleSheet(st.main_background)
 
         self.text_area.setText('')
+        self.text_area.setStyleSheet(st.text_scrolls_style)
         text_layout = QVBoxLayout()
         text_layout.addWidget(self.text_area)
-        scroll = QScrollArea()
-        scroll.setLayout(text_layout)
+        paragraph_scroll = QScrollArea()
+        paragraph_scroll.setLayout(text_layout)
+
+
 
         self.main_layout = QVBoxLayout()
         self.main_layout.addLayout(self.create_paragraph_entering())
-        self.main_layout.addWidget(scroll)
+        self.main_layout.addWidget(paragraph_scroll)
+
+        label = QLabel()
+        label.setText('.docx представляет собой фактически .zip архив. \nНиже представлена информация о каждом файле, содержащемся в архиве ')
+        self.main_layout.addWidget(label)
+        self.main_layout.addWidget(self._create_doc_zip_info())
+
         self.main_layout.addLayout(self._create_footer())
 
         self.setLayout(self.main_layout)
@@ -37,6 +46,7 @@ class DocxInfoWindow(QWidget):
         self.p_num_text = QLineEdit()
         self.p_num_text.setFixedWidth(80)
         self.p_num_text.setStyleSheet(st.text_scrolls_style)
+
 
         self.accept_btn = QPushButton()
         self.accept_btn.setText('Выбрать')
@@ -128,3 +138,19 @@ class DocxInfoWindow(QWidget):
         jinfo = json.dumps(info)
         file.write(jinfo)
         file.close()
+
+    def _create_doc_zip_info(self):
+        text = ''
+        text = parser.list_to_str(self.doc_info.get_doxc_zip_info(),text)
+        text_br = QTextBrowser()
+        text_br.setText(text)
+        text_br.setStyleSheet(st.text_scrolls_style)
+
+        text_layout = QVBoxLayout()
+        text_layout.addWidget(text_br)
+
+        self.zip_scroll = QScrollArea()
+        self.zip_scroll.setLayout(text_layout)
+        return self.zip_scroll
+
+

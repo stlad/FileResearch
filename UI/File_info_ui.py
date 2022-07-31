@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import *
 import os
 import file_info_parser as parser
 import UI.styles as st
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import QSize, Qt
 
 class FileInfoWindow(QWidget):
     def __init__(self, fullpath):
@@ -32,9 +34,18 @@ class FileInfoWindow(QWidget):
         menu_layput.addWidget(self.save_btn)
         menu_layput.addStretch(1)
 
-        self.main_layout = QVBoxLayout()
-        self.main_layout.addLayout(menu_layput)
-        self.main_layout.addWidget(scroll)
+        self.main_layout = QGridLayout()
+        self.main_layout.addLayout(menu_layput,0,0)
+        self.main_layout.addWidget(scroll,1,0)
+
+        self.image = QLabel()
+        if self.file_info.file_type=='Image':
+            self.setGeometry(100,100,1000,900)
+            pixmap = QPixmap(self.file_info.full_path)
+            pixmap = pixmap.scaled(QSize(600, 900), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.image.setPixmap(pixmap)
+        self.main_layout.addWidget(self.image,1,1)
+
         self.setLayout(self.main_layout)
 
     def save_json(self):

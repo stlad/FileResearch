@@ -29,9 +29,8 @@ class DocxInfoWindow(QWidget):
         self.main_layout.addLayout(self.create_paragraph_entering())
         self.main_layout.addWidget(paragraph_scroll)
 
-        label = QLabel()
-        label.setText('.docx представляет собой фактически .zip архив. \nНиже представлена информация о каждом файле, содержащемся в архиве ')
-        self.main_layout.addWidget(label)
+
+        self.main_layout.addLayout(self._create_zip_unppack_layout())
         self.main_layout.addWidget(self._create_doc_zip_info())
 
         self.main_layout.addLayout(self._create_footer())
@@ -152,5 +151,31 @@ class DocxInfoWindow(QWidget):
         self.zip_scroll = QScrollArea()
         self.zip_scroll.setLayout(text_layout)
         return self.zip_scroll
+
+    def _create_zip_unppack_layout(self):
+        layout = QHBoxLayout()
+        self.unpack_btn = QPushButton()
+        self.unpack_btn.setText('unpack to...')
+        self.unpack_btn.setStyleSheet(st.button_style)
+        self.unpack_btn.clicked.connect(lambda : self._unpack_docx())
+
+        label = QLabel()
+        label.setText('.docx представляет собой фактически .zip архив. \nНиже представлена информация о каждом файле, содержащемся в архиве ')
+        layout.addWidget(label)
+        layout.addStretch(1)
+        layout.addWidget(self.unpack_btn)
+        return layout
+
+    def _unpack_docx(self):
+        directory = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
+        if directory=='':
+            return
+
+        dirname = self.name[:self.name.rfind('.')]
+        dir_path= directory + '/' + dirname
+        os.mkdir(path=dir_path)
+        self.doc_info.unzip_docx(dir_path)
+
+        pass
 
 

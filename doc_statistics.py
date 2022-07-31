@@ -54,6 +54,10 @@ class docx_staticstics:
         z.close()
         return res
 
+    def unzip_docx(self, target_path):
+        z = zip.ZipFile(self.fullpath, 'r')
+        z.extractall(path = target_path)
+
 
 class Paragraph:
     def __init__(self, par):

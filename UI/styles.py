@@ -17,10 +17,14 @@ button_style = '\n'.join([
     'QPushButton{'
     'background-color: #36393e;',
     'border:0px solid black;',
-    'padding:7px 7px 7px 7px;',
+    'padding:5px 5px 5px 5px;',
     'border-radius:3px;',
     '}',
     'QPushButton:hover{',
     'background-color:#2f3136;',
     '}'
     ])
+
+info_button = '\n'.join([
+    'background-image : url(icons/info_icon.png)'
+])

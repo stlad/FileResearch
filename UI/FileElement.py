@@ -16,8 +16,11 @@ class FileElement(QWidget):
         self.name = fullpath[fullpath.rfind('/')+1:]
         self.parent_browser = parent_path_browser
         self.is_dir = os.path.isdir(self.fullpath)
-        self.is_docx = self.name[self.name.find('.'):] == '.docx'
+
+        self.extention = '' if self.is_dir else self.name[self.name.find('.'):]
+        self.is_docx = self.extention == '.docx'
         buttnos= []
+
         self.layout = QHBoxLayout()
 
         self.file_button = QPushButton()
@@ -43,13 +46,13 @@ class FileElement(QWidget):
 
         buttnos.append(self.down_dir_button)
 
-        self.doc_info_button = QPushButton()
-        self.doc_info_button.setFixedWidth(50)
+        self.extention_info_button = QPushButton()
+        self.extention_info_button.setFixedWidth(70)
+        self.extention_info_button.setText(self.extention)
         if self.is_docx:
-            self.doc_info_button.setText('.docx')
-            self.doc_info_button.clicked.connect(lambda: self.create_docx_info_window())
+            self.extention_info_button.clicked.connect(lambda: self.create_docx_info_window())
 
-        buttnos.append(self.doc_info_button)
+        buttnos.append(self.extention_info_button)
 
         self.replace_button = QPushButton()
         self.replace_button.setFixedWidth(50)
@@ -59,6 +62,7 @@ class FileElement(QWidget):
 
         for btn in buttnos:
             btn.setStyleSheet(st.button_style)
+            btn.setFixedHeight(25)
 
         self.create_buttons()
 
@@ -124,14 +128,14 @@ class FileElement(QWidget):
         if self.parent_browser.side==en.Side.LEFT:
             self.layout.addWidget(self.file_button,0)
             self.layout.addWidget(self.info_button,1)
-            self.layout.addWidget(self.doc_info_button,2)
+            self.layout.addWidget(self.extention_info_button, 2)
             self.layout.addWidget(self.down_dir_button,3)
             self.replace_button.setText('→')
             self.layout.addWidget(self.replace_button,4)
         elif self.parent_browser.side==en.Side.RIGHT:
             self.layout.addWidget(self.replace_button,0)
             self.layout.addWidget(self.down_dir_button,1)
-            self.layout.addWidget(self.doc_info_button,2)
+            self.layout.addWidget(self.extention_info_button, 2)
             self.layout.addWidget(self.info_button,3)
             self.layout.addWidget(self.file_button,4)
             self.replace_button.setText('←')

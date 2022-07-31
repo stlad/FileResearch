@@ -49,8 +49,10 @@ class FileElement(QWidget):
         self.extention_info_button = QPushButton()
         self.extention_info_button.setFixedWidth(70)
         self.extention_info_button.setText(self.extention)
+        self.extention_info_button.setEnabled(False)
         if self.is_docx:
             self.extention_info_button.clicked.connect(lambda: self.create_docx_info_window())
+            self.extention_info_button.setEnabled(True)
 
         buttnos.append(self.extention_info_button)
 
@@ -63,6 +65,7 @@ class FileElement(QWidget):
         for btn in buttnos:
             btn.setStyleSheet(st.button_style)
             btn.setFixedHeight(25)
+
 
         self.create_buttons()
 

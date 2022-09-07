@@ -1,5 +1,7 @@
 import datetime
-from PIL import Image
+import os.path
+
+from  PIL import Image
 from PIL.ExifTags import TAGS
 
 import ffmpeg
@@ -23,6 +25,13 @@ def get_image_meta(imagename):
     return res
 
 def get_vid_meta(videoname):
+
+
+    ''' ЭТИ СТРОЧКИ НУЖНЫ ТОЛЬКО ЕСЛИ НЕ FFMPEG НЕ УСТАНОВЛЕН КАК ПЕРЕМЕННАЯ СРЕДЫ
+    path = os.path.abspath(__file__)
+    p = path[0:path.rfind('\\')]
+    return ffmpeg.probe(videoname,cmd = p+'\\FFmpeg\\bin\\ffprobe')
+    '''
     return ffmpeg.probe(videoname)
 
 

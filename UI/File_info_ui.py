@@ -52,8 +52,9 @@ class FileInfoWindow(QWidget):
         name, type = QFileDialog.getSaveFileName(self, 'Save File','', '(*.json)')
         if name=='':
             return
-        file = open(name[0], 'w+')
-        file.write(self.file_info.get_json())
+        file = open(name, 'w+')
+        res = self.file_info.get_json()
+        file.write(res)
         file.close()
 
 

@@ -67,15 +67,18 @@ class PathBrowser(QWidget):
         self.path_text_field.setText(path[0:index])
 
     def create_file(self):
+        print(self.path)
         if self.path =='...':
             return
 
-        name, type = QFileDialog.getSaveFileName(self, 'Создать файл','', '(*.txt)')
-        if name == '':
-            return
+        dialog = QInputDialog(self)
+        dialog.setTextValue('')
+        name, ok = dialog.getText(self, 'Создание папки', 'Имя:', QLineEdit.Normal)
 
-        file = open(name[0], 'w+')
-        file.close()
+        if not ok:
+            return
+        new_dir_path = self.path+'/'+name
+        os.mkdir(new_dir_path)
 
 
 
